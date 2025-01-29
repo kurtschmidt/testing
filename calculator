@@ -1,0 +1,277 @@
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Info } from 'lucide-react';
+
+const DidYouKnow = () => {
+  const facts = [
+    {
+      title: "84% of Features Go Unused",
+      description: "Continuous Discovery helps you build what customers actually want, saving time and resources."
+    },
+    {
+      title: "53% Higher Success Rate",
+      description: "Teams using continuous customer feedback are more likely to ship successful features on their first try."
+    },
+    {
+      title: "$10-100 Development Savings",
+      description: "For every dollar spent on user research, companies save an average of $10-100 in development costs."
+    },
+    {
+      title: "2x Goal Achievement",
+      description: "Teams that talk to users regularly are twice as likely to meet their product goals."
+    }
+  ];
+
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold text-center mb-6">Did You Know?</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {facts.map((fact, index) => (
+          <Card key={index} className="bg-white">
+            <CardContent className="p-6">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <Info className="w-6 h-6 text-blue-500" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-2">{fact.title}</h3>
+                  <p className="text-gray-600">{fact.description}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default DidYouKnow;
+import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+const ROICalculator = () => {
+  const [inputs, setInputs] = useState({
+    teamSize: 10,
+    avgSalary: 120000,
+    featuresPeryear: 24,
+    reworkPercentage: 40
+  });
+
+  const [results, setResults] = useState({
+    currentCost: 0,
+    projectedCost: 0,
+    savings: 0,
+    roi: 0
+  });
+
+  useEffect(() => {
+    calculateROI();
+  }, [inputs]);
+
+  const calculateROI = () => {
+    const hoursPerFeature = 160; // Assuming 1 month of work
+    const hourlyRate = inputs.avgSalary / 2080; // yearly hours
+    const reworkCost = (inputs.featuresPeryear * (inputs.reworkPercentage/100) * hoursPerFeature * hourlyRate * inputs.teamSize);
+    const projectedRework = reworkCost * 0.4;
+    const savings = reworkCost - projectedRework;
+    const roi = ((savings - 100000) / 100000) * 100;
+
+    setResults({
+      currentCost: reworkCost,
+      projectedCost: projectedRework,
+      savings: savings,
+      roi: roi
+    });
+  };
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle>Calculate Your ROI</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Input fields */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Team Size</label>
+              <input
+                type="number"
+                value={inputs.teamSize}
+                onChange={(e) => setInputs({...inputs, teamSize: parseInt(e.target.value) || 0})}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Average Salary</label>
+              <input
+                type="number"
+                value={inputs.avgSalary}
+                onChange={(e) => setInputs({...inputs, avgSalary: parseInt(e.target.value) || 0})}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Features Per Year</label>
+              <input
+                type="number"
+                value={inputs.featuresPeryear}
+                onChange={(e) => setInputs({...inputs, featuresPeryear: parseInt(e.target.value) || 0})}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Current Rework %</label>
+              <input
+                type="number"
+                value={inputs.reworkPercentage}
+                onChange={(e) => setInputs({...inputs, reworkPercentage: parseInt(e.target.value) || 0})}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+          </div>
+
+          <div className="mt-8 p-4 bg-gray-50 rounded">
+            <h3 className="font-semibold mb-4">Your Potential ROI</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Current Annual Rework Cost</p>
+                <p className="text-lg font-semibold">${results.currentCost.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Projected Annual Rework Cost</p>
+                <p className="text-lg font-semibold">${results.projectedCost.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Annual Savings</p>
+                <p className="text-lg font-semibold text-green-600">${results.savings.toLocaleString()}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">ROI</p>
+                <p className="text-lg font-semibold text-green-600">{results.roi.toFixed(0)}%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ROICalculator;
+import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+const AssessmentTool = () => {
+  const [scores, setScores] = useState({});
+  
+  const questions = [
+    {
+      category: "Research Culture",
+      questions: [
+        {
+          text: "How often does your team currently talk to users?",
+          options: [
+            { text: "Never", score: 0 },
+            { text: "A few times a year", score: 1 },
+            { text: "Monthly", score: 2 },
+            { text: "Weekly", score: 3 }
+          ]
+        },
+        {
+          text: "How do you currently make product decisions?",
+          options: [
+            { text: "Based on internal opinions", score: 0 },
+            { text: "Using analytics only", score: 1 },
+            { text: "Mix of data and research", score: 2 },
+            { text: "Regular customer feedback", score: 3 }
+          ]
+        }
+      ]
+    },
+    {
+      category: "Team Readiness",
+      questions: [
+        {
+          text: "How does your team view user research?",
+          options: [
+            { text: "Unnecessary step", score: 0 },
+            { text: "Nice to have", score: 1 },
+            { text: "Important but skip sometimes", score: 2 },
+            { text: "Essential to our process", score: 3 }
+          ]
+        }
+      ]
+    }
+  ];
+
+  const handleScore = (categoryIndex, questionIndex, score) => {
+    setScores({
+      ...scores,
+      [`${categoryIndex}-${questionIndex}`]: score
+    });
+  };
+
+  const calculateReadiness = () => {
+    const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+    const maxPossibleScore = questions.reduce((acc, category) => 
+      acc + category.questions.length * 3, 0
+    );
+    return Math.round((totalScore / maxPossibleScore) * 100);
+  };
+
+  return (
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle>Assess Your Continuous Discovery Readiness</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-8">
+          {questions.map((category, catIndex) => (
+            <div key={catIndex} className="space-y-6">
+              <h3 className="text-xl font-semibold">{category.category}</h3>
+              {category.questions.map((question, qIndex) => (
+                <div key={qIndex} className="space-y-4">
+                  <p className="font-medium">{question.text}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {question.options.map((option, oIndex) => (
+                      <button
+                        key={oIndex}
+                        onClick={() => handleScore(catIndex, qIndex, option.score)}
+                        className={`p-3 border rounded text-left hover:bg-blue-50 transition-colors ${
+                          scores[`${catIndex}-${qIndex}`] === option.score 
+                            ? 'bg-blue-100 border-blue-500' 
+                            : ''
+                        }`}
+                      >
+                        {option.text}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+
+          {Object.keys(scores).length > 0 && (
+            <div className="mt-8 p-4 bg-gray-50 rounded">
+              <h3 className="text-xl font-semibold mb-2">
+                Your Readiness Score: {calculateReadiness()}%
+              </h3>
+              <p className="text-gray-600">
+                {calculateReadiness() > 75 
+                  ? "You're ready for Continuous Discovery! Let's talk about getting started."
+                  : calculateReadiness() > 50
+                  ? "You're on your way! Let's discuss how to prepare for Continuous Discovery."
+                  : "We can help you build a stronger research culture. Let's chat about first steps."}
+              </p>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default AssessmentTool;
