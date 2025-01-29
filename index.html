@@ -4,36 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Continuous Discovery Tools</title>
-    <!-- Include Tailwind CSS from CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 p-4">
-    <!-- Main Container -->
-    <div class="max-w-4xl mx-auto">
+    <!-- Main Container with added bottom margin -->
+    <div class="max-w-4xl mx-auto mb-24">
         <!-- Header -->
         <header class="text-center mb-12">
             <h1 class="text-3xl font-bold mb-4">Continuous Discovery Tools</h1>
             <p class="text-gray-600">Understand the value of continuous customer feedback</p>
         </header>
 
-        <!-- Did You Know Section -->
+        <!-- Did You Know Section - Redesigned to look more informational -->
         <section class="mb-12">
             <h2 class="text-2xl font-bold text-center mb-6">Did You Know?</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">84% of Features Go Unused</h3>
-                    <p class="text-gray-600">Continuous Discovery helps you build what customers actually want.</p>
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-blue-900">84% of Features Go Unused</h3>
+                            <p class="text-blue-800">Continuous Discovery helps you build what customers actually want.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-lg font-semibold mb-2">53% Higher Success Rate</h3>
-                    <p class="text-gray-600">Teams using continuous feedback are more likely to succeed.</p>
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-blue-900">53% Higher Success Rate</h3>
+                            <p class="text-blue-800">Teams using continuous feedback are more likely to succeed.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ROI Calculator -->
+        <!-- ROI Calculator - Same as before -->
         <section class="bg-white rounded-lg shadow mb-12 p-6">
             <h2 class="text-2xl font-bold text-center mb-6">ROI Calculator</h2>
+            <!-- Rest of ROI Calculator content remains the same -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div>
                     <label class="block mb-2">Team Size</label>
@@ -93,15 +107,15 @@
     </div>
 
     <script>
-        // ROI Calculator
+        // ROI Calculator function remains the same
         function calculateROI() {
             const teamSize = Number(document.getElementById('teamSize').value);
             const avgSalary = Number(document.getElementById('avgSalary').value);
             const featuresPerYear = Number(document.getElementById('featuresPerYear').value);
             const reworkPercentage = Number(document.getElementById('reworkPercentage').value);
 
-            const hoursPerFeature = 160; // Assuming 1 month of work
-            const hourlyRate = avgSalary / 2080; // yearly hours
+            const hoursPerFeature = 160;
+            const hourlyRate = avgSalary / 2080;
             const reworkCost = (featuresPerYear * (reworkPercentage/100) * hoursPerFeature * hourlyRate * teamSize);
             const projectedRework = reworkCost * 0.4;
             const savings = reworkCost - projectedRework;
@@ -113,7 +127,7 @@
             document.getElementById('roi').textContent = Math.round(roi) + '%';
         }
 
-        // Assessment Tool
+        // Updated Assessment questions array with new question
         const questions = [
             {
                 text: "How often does your team currently talk to users?",
@@ -131,6 +145,24 @@
                     { text: "Using analytics only", score: 1 },
                     { text: "Mix of data and research", score: 2 },
                     { text: "Regular customer feedback", score: 3 }
+                ]
+            },
+            {
+                text: "How does your team view user research?",
+                options: [
+                    { text: "Unnecessary step", score: 0 },
+                    { text: "Nice to have", score: 1 },
+                    { text: "Important but skip sometimes", score: 2 },
+                    { text: "Essential to our process", score: 3 }
+                ]
+            },
+            {
+                text: "How integrated is research in your development process?",
+                options: [
+                    { text: "Not at all", score: 0 },
+                    { text: "Only for major releases", score: 1 },
+                    { text: "For most features", score: 2 },
+                    { text: "Fully integrated in our workflow", score: 3 }
                 ]
             }
         ];
@@ -165,21 +197,23 @@
             });
             event.target.classList.add('bg-blue-100', 'border-blue-500');
 
-            // Calculate and show result
-            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
-            const maxScore = questions.length * 3;
-            const percentage = Math.round((totalScore / maxScore) * 100);
+            // Calculate and show result if all questions are answered
+            if (Object.keys(scores).length === questions.length) {
+                const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+                const maxScore = questions.length * 3;
+                const percentage = Math.round((totalScore / maxScore) * 100);
 
-            document.getElementById('assessmentResult').classList.remove('hidden');
-            document.getElementById('readinessScore').textContent = percentage;
-            
-            const messageElement = document.getElementById('readinessMessage');
-            if (percentage > 75) {
-                messageElement.textContent = "You're ready for Continuous Discovery! Let's talk about getting started.";
-            } else if (percentage > 50) {
-                messageElement.textContent = "You're on your way! Let's discuss how to prepare for Continuous Discovery.";
-            } else {
-                messageElement.textContent = "We can help you build a stronger research culture. Let's chat about first steps.";
+                document.getElementById('assessmentResult').classList.remove('hidden');
+                document.getElementById('readinessScore').textContent = percentage;
+                
+                const messageElement = document.getElementById('readinessMessage');
+                if (percentage > 75) {
+                    messageElement.textContent = "You're ready for Continuous Discovery! Let's talk about getting started.";
+                } else if (percentage > 50) {
+                    messageElement.textContent = "You're on your way! Let's discuss how to prepare for Continuous Discovery.";
+                } else {
+                    messageElement.textContent = "We can help you build a stronger research culture. Let's chat about first steps.";
+                }
             }
         }
 
