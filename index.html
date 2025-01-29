@@ -1,5 +1,96 @@
 <!DOCTYPE html>
-<!-- Previous HTML remains the same until the ROI Calculator section end -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuous Discovery Tools</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 p-4">
+    <!-- Main Container -->
+    <div class="max-w-4xl mx-auto mb-24">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-3xl font-bold mb-4">Continuous Discovery Tools</h1>
+            <p class="text-gray-600">Understand the value of continuous customer feedback</p>
+        </header>
+
+        <!-- Did You Know Section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-center mb-6">Did You Know?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-blue-900">84% of Features Go Unused</h3>
+                            <p class="text-blue-800">Continuous Discovery helps you build what customers actually want.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <svg class="w-6 h-6 text-blue-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-2 text-blue-900">53% Higher Success Rate</h3>
+                            <p class="text-blue-800">Teams using continuous feedback are more likely to succeed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ROI Calculator -->
+        <section class="bg-white rounded-lg shadow mb-12 p-6">
+            <h2 class="text-2xl font-bold text-center mb-6">ROI Calculator</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                    <label class="block mb-2">Team Size</label>
+                    <input type="number" id="teamSize" value="10" 
+                           class="w-full p-2 border rounded" onchange="calculateROI()">
+                </div>
+                <div>
+                    <label class="block mb-2">Average Salary</label>
+                    <input type="number" id="avgSalary" value="120000" 
+                           class="w-full p-2 border rounded" onchange="calculateROI()">
+                </div>
+                <div>
+                    <label class="block mb-2">Features Per Year</label>
+                    <input type="number" id="featuresPerYear" value="24" 
+                           class="w-full p-2 border rounded" onchange="calculateROI()">
+                </div>
+                <div>
+                    <label class="block mb-2">Current Rework Percentage</label>
+                    <input type="number" id="reworkPercentage" value="40" 
+                           class="w-full p-2 border rounded" onchange="calculateROI()">
+                </div>
+            </div>
+            <div class="bg-gray-50 p-4 rounded">
+                <h3 class="font-semibold mb-4">Your Potential ROI</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Current Annual Rework Cost</p>
+                        <p id="currentCost" class="text-lg font-semibold">$0</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Projected Annual Rework Cost</p>
+                        <p id="projectedCost" class="text-lg font-semibold">$0</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Annual Savings</p>
+                        <p id="savings" class="text-lg font-semibold text-green-600">$0</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">ROI</p>
+                        <p id="roi" class="text-lg font-semibold text-green-600">0%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Visual divider -->
         <div class="max-w-xl mx-auto mb-12">
@@ -28,7 +119,85 @@
     </div>
 
     <script>
-        // Previous JavaScript remains the same until handleAssessmentChoice function
+        // ROI Calculator
+        function calculateROI() {
+            const teamSize = Number(document.getElementById('teamSize').value);
+            const avgSalary = Number(document.getElementById('avgSalary').value);
+            const featuresPerYear = Number(document.getElementById('featuresPerYear').value);
+            const reworkPercentage = Number(document.getElementById('reworkPercentage').value);
+
+            const hoursPerFeature = 160;
+            const hourlyRate = avgSalary / 2080;
+            const reworkCost = (featuresPerYear * (reworkPercentage/100) * hoursPerFeature * hourlyRate * teamSize);
+            const projectedRework = reworkCost * 0.4;
+            const savings = reworkCost - projectedRework;
+            const roi = ((savings - 100000) / 100000) * 100;
+
+            document.getElementById('currentCost').textContent = '$' + Math.round(reworkCost).toLocaleString();
+            document.getElementById('projectedCost').textContent = '$' + Math.round(projectedRework).toLocaleString();
+            document.getElementById('savings').textContent = '$' + Math.round(savings).toLocaleString();
+            document.getElementById('roi').textContent = Math.round(roi) + '%';
+        }
+
+        // Assessment questions
+        const questions = [
+            {
+                text: "How often does your team currently talk to users?",
+                options: [
+                    { text: "Never", score: 0 },
+                    { text: "A few times a year", score: 1 },
+                    { text: "Monthly", score: 2 },
+                    { text: "Weekly", score: 3 }
+                ]
+            },
+            {
+                text: "How do you currently make product decisions?",
+                options: [
+                    { text: "Based on internal opinions", score: 0 },
+                    { text: "Using analytics only", score: 1 },
+                    { text: "Mix of data and research", score: 2 },
+                    { text: "Regular customer feedback", score: 3 }
+                ]
+            },
+            {
+                text: "How does your team view user research?",
+                options: [
+                    { text: "Unnecessary step", score: 0 },
+                    { text: "Nice to have", score: 1 },
+                    { text: "Important but skip sometimes", score: 2 },
+                    { text: "Essential to our process", score: 3 }
+                ]
+            },
+            {
+                text: "How integrated is research in your development process?",
+                options: [
+                    { text: "Not at all", score: 0 },
+                    { text: "Only for major releases", score: 1 },
+                    { text: "For most features", score: 2 },
+                    { text: "Fully integrated in our workflow", score: 3 }
+                ]
+            }
+        ];
+
+        // Initialize assessment
+        const assessmentDiv = document.getElementById('assessment');
+        questions.forEach((question, qIndex) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'space-y-4';
+            questionDiv.innerHTML = `
+                <p class="font-medium">${question.text}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    ${question.options.map((option, oIndex) => `
+                        <button onclick="handleAssessmentChoice(${qIndex}, ${option.score})"
+                                class="assessment-btn p-3 border rounded text-left hover:bg-blue-50"
+                                data-question="${qIndex}">
+                            ${option.text}
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+            assessmentDiv.appendChild(questionDiv);
+        });
 
         const scores = {};
         function handleAssessmentChoice(questionIndex, score) {
